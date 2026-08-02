@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { CATS, GAMES, type Game } from "@/lib/data";
 import { GameCard } from "@/components/game-card";
 
-export default function Home() {
+export default function BibliotecaPage() {
   const router = useRouter();
   const [q, setQ] = useState("");
   const [cat, setCat] = useState<(typeof CATS)[number]>("TODOS");
