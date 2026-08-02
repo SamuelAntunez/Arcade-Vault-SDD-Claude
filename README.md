@@ -14,3 +14,14 @@ https://github.com/Klerith/fernando-skills
 ```bash
 npx skills@latest add Klerith/fernando-skills
 ```
+
+## Commands
+
+```bash
+npm run dev     # start dev server (next dev)
+npm run build   # production build
+npm run start   # run production build
+npm run lint    # eslint
+```
+
+No test suite is configured.

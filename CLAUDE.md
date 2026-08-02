@@ -12,17 +12,6 @@ breaking changes vs. training data. Before writing or editing any Next.js code, 
 `04-community`) for the API actually in use here — do not assume upstream Next.js
 conventions apply.
 
-## Commands
-
-```bash
-npm run dev     # start dev server (next dev)
-npm run build   # production build
-npm run start   # run production build
-npm run lint    # eslint
-```
-
-No test suite is configured.
-
 ## Project
 
 Arcade Vault: a portal to play small arcade games online and compete on score
@@ -69,3 +58,7 @@ When porting this into the real app, the routes/screens map roughly to: library
 (catalog + category filter), game detail, game player (with score submission), auth,
 and hall of fame (leaderboard) — but re-implement with the App Router (file-based
 routing, no hash router) rather than copying the prototype's routing/state approach.
+
+## Skills
+
+Usa siempre el /frontend-design cuando para diseñar la interfaz de usuario.
