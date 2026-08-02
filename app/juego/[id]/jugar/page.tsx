@@ -35,8 +35,8 @@ export default function GamePlayerPage({
 
   const { user } = useSession();
   const [score, setScore] = useState(0);
-  const [lives] = useState(3);
-  const [level, setLevel] = useState(1);
+  const lives = 3;
+  const level = Math.floor(score / 2500) + 1;
   const [paused, setPaused] = useState(false);
   const [over, setOver] = useState(false);
   const [name, setName] = useState(user ? user.name : "INVITADO");
@@ -48,14 +48,9 @@ export default function GamePlayerPage({
     return () => clearInterval(t);
   }, [over, paused]);
 
-  useEffect(() => {
-    if (score > 0 && score % 2500 < 100) setLevel((l) => l + 1);
-  }, [score]);
-
   const endGame = () => setOver(true);
   const restart = () => {
     setScore(0);
-    setLevel(1);
     setPaused(false);
     setOver(false);
     setSaved(false);
