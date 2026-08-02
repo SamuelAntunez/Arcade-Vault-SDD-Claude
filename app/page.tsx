@@ -220,7 +220,7 @@ export default function HomePage() {
   useReveal();
 
   const gameScores = useMemo(
-    () => GAMES.map((g) => ({ game: g, rows: seededScores(g.id.length * 17 + 3, 10) })),
+    () => GAMES.map((g, i) => ({ game: g, rows: seededScores((i + 1) * 97 + g.id.length * 17 + 3, 10) })),
     []
   );
 

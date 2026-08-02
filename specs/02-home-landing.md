@@ -35,8 +35,8 @@
 
 No se introducen estructuras de datos nuevas ni persistidas. La sección "Actividad en vivo" es una **derivación en memoria** a partir de lo ya existente en `lib/data.ts` (`GAMES`, `seededScores`), calculada en el propio `app/page.tsx`:
 
-- **Top jugadores · hoy** (5 filas): para cada juego de `GAMES`, tomar la fila `rank === 1` de `seededScores(game.id.length * 17 + 3, 10)`; combinar las 8 filas resultantes, ordenar por `score` descendente y quedarse con las 5 primeras. Se re-numera el `rank` mostrado (1 a 5) según ese orden combinado.
-- **Últimas puntuaciones** (7 filas): tomar, para 7 juegos distintos de `GAMES` (en su orden natural), la fila `rank === 2` de `seededScores(game.id.length * 17 + 3, 10)` como jugador/puntuación; emparejar con el `title` del juego y un tiempo relativo generado de forma determinista a partir del índice (ej. array fijo `["hace 2 min", "hace 5 min", "hace 8 min", "hace 12 min", "hace 18 min", "hace 24 min", "hace 31 min"]`, igual que el template).
+- **Top jugadores · hoy** (5 filas): para cada juego de `GAMES` (índice `i`), tomar la fila `rank === 1` de `seededScores((i + 1) * 97 + game.id.length * 17 + 3, 10)`; combinar las 8 filas resultantes, ordenar por `score` descendente y quedarse con las 5 primeras. Se re-numera el `rank` mostrado (1 a 5) según ese orden combinado. El seed incluye el índice del juego (no solo `id.length`) para evitar que dos juegos con ids del mismo largo (ej. `caida` y `rocas`, ambos 5 caracteres) generen el mismo seed y produzcan filas idénticas/duplicadas.
+- **Últimas puntuaciones** (7 filas): tomar, para 7 juegos distintos de `GAMES` (en su orden natural), la fila `rank === 2` del mismo `seededScores` por juego como jugador/puntuación; emparejar con el `title` del juego y un tiempo relativo generado de forma determinista a partir del índice (ej. array fijo `["hace 2 min", "hace 5 min", "hace 8 min", "hace 12 min", "hace 18 min", "hace 24 min", "hace 31 min"]`, igual que el template).
 
 No hay claves nuevas de `localStorage`.
 
