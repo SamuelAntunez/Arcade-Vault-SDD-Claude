@@ -1,6 +1,6 @@
 # Spec 02 — Home / Landing Page
 
-- **Estado:** Aprobado
+- **Estado:** Implementado
 - **Dependencias:** Spec 01 (MVP Visual) — reutiliza `lib/data.ts`, `SessionProvider`, `components/nav.tsx` y el sistema de diseño ya definido en `app/globals.css`.
 - **Fecha:** 2026-08-02
 
