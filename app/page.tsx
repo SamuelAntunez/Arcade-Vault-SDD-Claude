@@ -1,8 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import Link from "next/link";
-import { GAMES } from "@/lib/data";
+import { GAMES, seededScores } from "@/lib/data";
+
+const RELATIVE_TIMES = [
+  "hace 2 min",
+  "hace 5 min",
+  "hace 8 min",
+  "hace 12 min",
+  "hace 18 min",
+  "hace 24 min",
+  "hace 31 min",
+];
 
 function useReveal() {
   useEffect(() => {
@@ -209,6 +219,26 @@ const FEATURES = [
 export default function HomePage() {
   useReveal();
 
+  const gameScores = useMemo(
+    () => GAMES.map((g) => ({ game: g, rows: seededScores(g.id.length * 17 + 3, 10) })),
+    []
+  );
+
+  const topPlayers = useMemo(() => {
+    return gameScores
+      .map(({ rows }) => rows.find((r) => r.rank === 1)!)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 5)
+      .map((r, i) => ({ rank: i + 1, name: r.name, score: r.score }));
+  }, [gameScores]);
+
+  const recentScores = useMemo(() => {
+    return gameScores.slice(0, 7).map(({ game, rows }, i) => {
+      const row = rows.find((r) => r.rank === 2)!;
+      return { name: row.name, game: game.title, score: row.score, time: RELATIVE_TIMES[i], color: game.color };
+    });
+  }, [gameScores]);
+
   return (
     <div className="home fade-in">
       {/* HERO */}
@@ -285,6 +315,70 @@ export default function HomePage() {
           <Link href="/biblioteca" className="btn lg">
             VER TODOS LOS JUEGOS →
           </Link>
+        </div>
+      </section>
+
+      {/* STATS */}
+      <section className="home-stats reveal">
+        <div className="stats-inner">
+          {[
+            { n: `${GAMES.length}+`, u: "JUEGOS", s: "Y CONTANDO" },
+            { n: "MILES", u: "DE PARTIDAS", s: "JUGADAS CADA DÍA" },
+            { n: "GLOBAL", u: "RANKING", s: "COMPITE CON EL MUNDO" },
+          ].map((st, i) => (
+            <div key={i} className="stat-block" style={{ transitionDelay: i * 90 + "ms" }}>
+              <div className="stat-n neon-yellow">{st.n}</div>
+              <div className="stat-u pixel">{st.u}</div>
+              <div className="stat-s">{st.s}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* RECENT ACTIVITY / LEADERBOARD */}
+      <section className="home-section reveal">
+        <div className="section-head">
+          <div className="kicker pixel neon-yellow">// 03</div>
+          <h2 className="section-title">ACTIVIDAD EN VIVO</h2>
+          <div className="section-rule"></div>
+        </div>
+        <div className="activity-grid">
+          <div className="activity-card">
+            <div className="ac-head">
+              <div className="ac-title pixel">▸ ÚLTIMAS PUNTUACIONES</div>
+            </div>
+            <div className="ticker">
+              {recentScores.map((r, i) => (
+                <div key={i} className="tick-row" style={{ animationDelay: i * 60 + "ms" }}>
+                  <span className={"tk-p neon-" + r.color}>{r.name}</span>
+                  <span className="tk-mid">▸ {r.game}</span>
+                  <span className="tk-s">+{r.score.toLocaleString("es-ES")}</span>
+                  <span className="tk-t">{r.time}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="activity-card">
+            <div className="ac-head">
+              <div className="ac-title pixel neon-magenta">▸ TOP JUGADORES · HOY</div>
+              <Link href="/salon" className="lb-link">
+                VER SALÓN →
+              </Link>
+            </div>
+            <div className="top-list">
+              {topPlayers.map((r, i) => (
+                <div key={i} className={"top-row" + (i === 0 ? " top1" : i === 1 ? " top2" : i === 2 ? " top3" : "")}>
+                  <span className="tp-rk">#{String(r.rank).padStart(2, "0")}</span>
+                  <span className="tp-bar">
+                    <span className="tp-fill" style={{ width: 100 - i * 16 + "%" }}></span>
+                  </span>
+                  <span className="tp-p">{r.name}</span>
+                  <span className="tp-s">{r.score.toLocaleString("es-ES")}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
     </div>
